@@ -34,3 +34,14 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Virtualenv
+venv
+*.pyc
+
+# PyCharm
+.idea
+
+config.ini
+
+*.log
