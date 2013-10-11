@@ -16,14 +16,13 @@ job_id = client.insert_upload(csv)
 """
 
 import logging
-import requests
-
-from base64 import b64encode
-from poster.encode import multipart_encode, MultipartParam
-from poster.streaminghttp import register_openers
 from urllib import urlencode
 from xml.etree import ElementTree as et
 from xml.dom.minidom import parseString
+
+import requests
+from poster.encode import multipart_encode, MultipartParam
+from poster.streaminghttp import register_openers
 
 
 class RESTClient(object):
@@ -36,8 +35,14 @@ class RESTClient(object):
         self.password = password
         self.key = key
 
-    def insert_upload(self, csv):
-        """ Uploads a file """
+    def insert_upload(self, csv, column_mapping=None):
+        """ Uploads a file
+        :param csv: a string of comma-separated data
+        :param column_mapping: an optional dict of column mappings
+                               e.g. {1: 'EMAIL', 2: 'CUSTNUM', 3: 'FIRSTNAME'}
+        :return: Campaign Commander Job ID
+        :rtype: Integer
+        """
         credentials = urlencode({"login": self.login,
                                  "password": self.password,
                                  "key": self.key})
@@ -65,10 +70,15 @@ class RESTClient(object):
         dateFormat = et.SubElement(insertUpload, "dateFormat")
         dateFormat.text = 'MM/dd/YYYY'
         mapping = et.SubElement(insertUpload, "mapping")
-        columns = {"1": "EMAIL",
-                   "2": "CUSTNUM",
-                   "3": "FIRSTNAME",
-                   "4": "LASTNAME"}
+
+        if column_mapping is None:
+            columns = {"1": "EMAIL",
+                       "2": "CUSTNUM",
+                       "3": "FIRSTNAME",
+                       "4": "LASTNAME"}
+        else:
+            columns = column_mapping
+
         for k, v in sorted(columns.iteritems()):
             column = et.SubElement(mapping, "column")
             colNum = et.SubElement(column, "colNum")
