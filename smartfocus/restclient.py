@@ -66,7 +66,7 @@ class RESTClient(object):
         fileName = et.SubElement(insertUpload, "fileName")
         fileName.text = 'listpull.csv'
         separator = et.SubElement(insertUpload, "separator")
-        separator.text = ','
+        separator.text = 'tab'  # using \t fails
         dateFormat = et.SubElement(insertUpload, "dateFormat")
         dateFormat.text = 'MM/dd/YYYY'
         mapping = et.SubElement(insertUpload, "mapping")
@@ -90,17 +90,10 @@ class RESTClient(object):
         data = et.tostring(root)
         logging.debug(parseString(data).toprettyxml())
 
-        # Base64-encode CSV Data
-        #try:
-        #    b64data = b64encode(csv)
-        #except Exception as e:
-        #    logging.error("Error: " + e.message)
-        #    raise
-
         # Construct Multipart Message
         x = [MultipartParam('insertUpload', value=data,
                             filetype="text/xml; charset=utf8"),
-             MultipartParam('inputStream', value=csv, filename='email.csv',
+             MultipartParam('inputStream', value=csv, filename='data.txt',
                             filetype="application/octet-stream")]
         encData, encHeaders = multipart_encode(x)
 
