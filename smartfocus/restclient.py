@@ -64,7 +64,7 @@ class RESTClient(object):
         criteria = et.SubElement(insertUpload, "criteria")
         criteria.text = 'LOWER(EMAIL)'
         fileName = et.SubElement(insertUpload, "fileName")
-        fileName.text = 'listpull.csv'
+        fileName.text = 'listpull.txt'
         separator = et.SubElement(insertUpload, "separator")
         separator.text = 'tab'  # using \t fails
         dateFormat = et.SubElement(insertUpload, "dateFormat")
