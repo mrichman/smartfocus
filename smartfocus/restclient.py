@@ -35,7 +35,7 @@ class RESTClient(object):
         self.password = password
         self.key = key
 
-    def insert_upload(self, csv, column_mapping=None):
+    def merge_upload(self, csv, column_mapping=None):
         """ Uploads a file
         :param csv: a string of comma-separated data
         :param column_mapping: an optional dict of column mappings
@@ -57,7 +57,7 @@ class RESTClient(object):
         register_openers()
 
         insert_upload_url = self.url + "batchmemberservice/" + token + \
-            "/batchmember/insertUpload"
+            "/batchmember/mergeUpload"
 
         # Define Column Mapping XML
         insertUpload = et.Element("insertUpload")
@@ -91,7 +91,7 @@ class RESTClient(object):
         logging.debug(parseString(data).toprettyxml())
 
         # Construct Multipart Message
-        x = [MultipartParam('insertUpload', value=data,
+        x = [MultipartParam('mergeUpload', value=data,
                             filetype="text/xml; charset=utf8"),
              MultipartParam('inputStream', value=csv, filename='data.txt',
                             filetype="application/octet-stream")]
